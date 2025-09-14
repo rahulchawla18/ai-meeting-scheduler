@@ -21,25 +21,28 @@ CLIENT_SECRETS_FILE = "credentials.json"  # OAuth client JSON
 
 def get_services():
     """Return both Calendar and Gmail service objects using OAuth 2.0."""
-    creds = None
+    try:
+        creds = None
 
-    if os.path.exists(TOKEN_FILE):
-        with open(TOKEN_FILE, "rb") as token:
-            creds = pickle.load(token)
+        if os.path.exists(TOKEN_FILE):
+            with open(TOKEN_FILE, "rb") as token:
+                creds = pickle.load(token)
 
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(GoogleRequest())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-            creds = flow.run_local_server(port=8080, prompt="consent")
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(GoogleRequest())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
+                creds = flow.run_local_server(port=8080, prompt="consent")
 
-        with open(TOKEN_FILE, "wb") as token:
-            pickle.dump(creds, token)
+            with open(TOKEN_FILE, "wb") as token:
+                pickle.dump(creds, token)
 
-    calendar_service = build("calendar", "v3", credentials=creds)
-    gmail_service = build("gmail", "v1", credentials=creds)
-    return calendar_service, gmail_service
+        calendar_service = build("calendar", "v3", credentials=creds)
+        gmail_service = build("gmail", "v1", credentials=creds)
+        return calendar_service, gmail_service
+    except Exception as e:
+        raise ValueError(f"Error: {e}")
 
 
 def _parse_iso(dt_str: str) -> datetime:
@@ -97,6 +100,8 @@ def create_event(details: Any) -> Dict[str, Any]:
         "start": _maybe_add_timezone(start_dt),
         "end": _maybe_add_timezone(end_dt),
     }
+
+    print(event_body)
 
     if participants:
         event_body["attendees"] = [{"email": e} for e in participants]

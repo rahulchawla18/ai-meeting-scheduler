@@ -209,3 +209,4 @@ __marimo__/
 # Google API creds
 credentials.json
 token.pickle
+.idea/

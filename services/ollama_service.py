@@ -46,6 +46,7 @@ def extract_meeting_from_prompt(prompt: str) -> Dict[str, Any]:
 
     try:
         data = r.json()
+        print(data)
         content = data["message"]["content"].strip()
 
         # Try direct JSON parsing
