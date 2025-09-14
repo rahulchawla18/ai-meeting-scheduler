@@ -1,0 +1,35 @@
+services:
+  web:
+    build: .
+    container_name: fastapi-container
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    environment:
+      - PYTHONPATH=/app/.venv/lib/python3.11/site-packages
+    command: .venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - ollama
+    networks:
+      - app-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-container
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - app-network
+# docker exec -it ollama-container ollama pull tinyllama
+
+volumes:
+  ollama-data:
+
+networks:
+  app-network:
+    driver: bridge
