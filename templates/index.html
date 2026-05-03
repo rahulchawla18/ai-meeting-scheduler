@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Meeting Scheduler</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🤖</span>
+                <h1>AI Meeting Scheduler</h1>
+            </div>
+            <p class="tagline">Schedule meetings with natural language powered by GROQ AI</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2>🎯 Schedule a Meeting</h2>
+                    <p>Just describe your meeting in plain English</p>
+                </div>
+
+                <form id="meetingForm" class="meeting-form">
+                    <div class="form-group">
+                        <label for="prompt">Meeting Details</label>
+                        <textarea 
+                            id="prompt" 
+                            name="prompt" 
+                            rows="4" 
+                            placeholder="Example: Schedule a meeting with john@example.com tomorrow at 2pm for 1 hour to discuss project updates"
+                            required
+                        ></textarea>
+                        <div class="char-count">
+                            <span id="charCount">0</span> characters
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span class="btn-icon">✨</span>
+                        <span class="btn-text">Schedule Meeting</span>
+                        <span class="btn-loader" id="loader"></span>
+                    </button>
+                </form>
+
+                <div id="result" class="result hidden">
+                    <div class="result-content">
+                        <div class="result-icon success-icon">✓</div>
+                        <h3>Meeting Scheduled Successfully!</h3>
+                        <div class="meeting-info" id="meetingInfo"></div>
+                        <div class="result-actions">
+                            <a id="eventLink" href="#" target="_blank" class="btn-secondary">
+                                🔗 View in Calendar
+                            </a>
+                            <button onclick="resetForm()" class="btn-secondary">
+                                ➕ Schedule Another
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="error" class="result error-result hidden">
+                    <div class="result-content">
+                        <div class="result-icon error-icon">✕</div>
+                        <h3>Oops! Something went wrong</h3>
+                        <p id="errorMessage"></p>
+                        <button onclick="resetForm()" class="btn-secondary">
+                            🔄 Try Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="examples-section">
+                <h3>💡 Example Prompts</h3>
+                <div class="examples-grid">
+                    <div class="example-card" onclick="fillExample(this)">
+                        <span class="example-icon">👥</span>
+                        <p>Schedule a team standup with team@company.com tomorrow at 10am for 30 minutes</p>
+                    </div>
+                    <div class="example-card" onclick="fillExample(this)">
+                        <span class="example-icon">💼</span>
+                        <p>Book a client meeting with client@example.com on Friday at 3pm for 1 hour to discuss Q1 results</p>
+                    </div>
+                    <div class="example-card" onclick="fillExample(this)">
+                        <span class="example-icon">🎯</span>
+                        <p>Set up a project review with manager@company.com next Monday at 2pm for 45 minutes</p>
+                    </div>
+                    <div class="example-card" onclick="fillExample(this)">
+                        <span class="example-icon">🚀</span>
+                        <p>Create a brainstorming session with innovation@company.com tomorrow at 4pm for 2 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Powered by GROQ AI & Google Calendar API</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
